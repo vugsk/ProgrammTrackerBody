@@ -1,0 +1,206 @@
+<UserControl x:Class="ProgrammTrackerBody.Views.CalibrationTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:domain="clr-namespace:ProgrammTrackerBody.Domain"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="900">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Intro text -->
+        <TextBlock Grid.Row="0" Text="{DynamicResource Calibration.Intro}"
+                   TextWrapping="Wrap" Foreground="#555555" Margin="0,0,0,12" />
+
+        <!-- Four big action buttons -->
+        <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,12">
+
+            <!-- Full setup (mounting + clears yaw/full) -->
+            <Button Margin="0,0,6,0" MinHeight="120" Padding="0"
+                    Command="{Binding StartFullSetupCommand}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="14">
+                        <TextBlock Text="{DynamicResource Calibration.StartFullSetup}"
+                                   FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                        <TextBlock Text="{DynamicResource Calibration.PoseFullSetup}"
+                                   FontSize="11" Foreground="#666666"
+                                   TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="220" Margin="0,6,0,0" />
+                    </StackPanel>
+                    <Border Background="#D99C27B0" CornerRadius="3"
+                            Visibility="{Binding IsFullSetupCountdown, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding CountdownText}" FontSize="60" FontWeight="Bold"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Grid>
+            </Button>
+
+            <!-- Full reset -->
+            <Button Margin="6,0,6,0" MinHeight="120" Padding="0"
+                    Command="{Binding StartFullResetCommand}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="14">
+                        <TextBlock Text="{DynamicResource Calibration.StartFullReset}"
+                                   FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                        <TextBlock Text="{DynamicResource Calibration.PoseFull}"
+                                   FontSize="11" Foreground="#666666"
+                                   TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="220" Margin="0,6,0,0" />
+                    </StackPanel>
+                    <Border Background="#D92196F3" CornerRadius="3"
+                            Visibility="{Binding IsFullCountdown, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding CountdownText}" FontSize="60" FontWeight="Bold"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Grid>
+            </Button>
+
+            <!-- Yaw reset -->
+            <Button Margin="6,0,6,0" MinHeight="120" Padding="0"
+                    Command="{Binding StartYawResetCommand}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="14">
+                        <TextBlock Text="{DynamicResource Calibration.StartYawReset}"
+                                   FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                        <TextBlock Text="{DynamicResource Calibration.PoseYaw}"
+                                   FontSize="11" Foreground="#666666"
+                                   TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="220" Margin="0,6,0,0" />
+                    </StackPanel>
+                    <Border Background="#D9388E3C" CornerRadius="3"
+                            Visibility="{Binding IsYawCountdown, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding CountdownText}" FontSize="60" FontWeight="Bold"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Grid>
+            </Button>
+
+            <!-- Mounting reset (advanced — most users prefer the Full Calibration button) -->
+            <Button Margin="6,0,0,0" MinHeight="120" Padding="0"
+                    Command="{Binding StartMountingResetCommand}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="14">
+                        <TextBlock Text="{DynamicResource Calibration.StartMountingReset}"
+                                   FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                        <TextBlock Text="{DynamicResource Calibration.PoseMounting}"
+                                   FontSize="11" Foreground="#666666"
+                                   TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="220" Margin="0,6,0,0" />
+                    </StackPanel>
+                    <Border Background="#D9F57F17" CornerRadius="3"
+                            Visibility="{Binding IsMountingCountdown, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding CountdownText}" FontSize="60" FontWeight="Bold"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Grid>
+            </Button>
+        </UniformGrid>
+
+        <!-- Status bar -->
+        <Border Grid.Row="2" Background="#F0F0F4" CornerRadius="3" Padding="10,7" Margin="0,0,0,12">
+            <TextBlock Text="{Binding StatusMessageKey, Converter={StaticResource ResourceLookupConverter}}"
+                       Foreground="#444444" />
+        </Border>
+
+        <!-- Advanced (per-tracker) controls inside an expander -->
+        <Expander Grid.Row="3" Header="{DynamicResource Calibration.Advanced}"
+                  IsExpanded="False" Margin="0,0,0,12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="280">
+                <ItemsControl ItemsSource="{Binding Trackers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type domain:TrackerModel}">
+                            <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="6"
+                                    Padding="10" Margin="0,0,0,6" Background="#FAFAFA">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock>
+                                            <Run Text="{Binding DisplayName, Mode=OneWay}" FontWeight="SemiBold" />
+                                            <Run Text=" — " />
+                                            <Run Text="{Binding Mac, Mode=OneWay}" FontFamily="Consolas" />
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding BodyPart, Converter={StaticResource EnumResourceLookupConverter}, ConverterParameter=BodyPart}"
+                                                   Foreground="#666666" Margin="0,2,0,0" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button Content="{DynamicResource Calibration.YawReset}"
+                                                Command="{Binding DataContext.YawResetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding Mac}"
+                                                Padding="9,3" Margin="0,0,5,0" />
+                                        <Button Content="{DynamicResource Calibration.FullReset}"
+                                                Command="{Binding DataContext.FullResetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding Mac}"
+                                                Padding="9,3" Margin="0,0,5,0" />
+                                        <Button Content="{DynamicResource Calibration.MountingReset}"
+                                                Command="{Binding DataContext.MountingResetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding Mac}"
+                                                Padding="9,3" Margin="0,0,5,0" />
+                                        <Button Content="{DynamicResource Calibration.Vibrate}"
+                                                Command="{Binding DataContext.VibrateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding Mac}"
+                                                Padding="9,3" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Expander>
+
+        <!-- Offset debug table -->
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="{DynamicResource Calibration.OffsetTable}"
+                       FontWeight="SemiBold" Foreground="#555555" Margin="0,0,0,6" />
+            <DataGrid ItemsSource="{Binding Trackers}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      CanUserReorderColumns="False"
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="False"
+                      FontFamily="Consolas" FontSize="11">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding DisplayName}" Width="130" FontFamily="Segoe UI">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource Trackers.DisplayName}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Mac}" Width="130">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource Trackers.Mac}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding YawOffsetText}" Width="*">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource Calibration.YawOffset}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding FullOffsetText}" Width="*">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource Calibration.FullOffset}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MountingOffsetText}" Width="*">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource Calibration.MountingOffset}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,55 @@
+<UserControl x:Class="ProgrammTrackerBody.Views.SkeletonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Height slider -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="16,8">
+            <TextBlock Text="{DynamicResource Skeleton.Height}"
+                       VerticalAlignment="Center" Margin="0,0,8,0" />
+            <Slider Value="{Binding HeightCm, Mode=TwoWay}"
+                    Minimum="{Binding HeightMin}"
+                    Maximum="{Binding HeightMax}"
+                    Width="220" VerticalAlignment="Center"
+                    TickFrequency="10" IsSnapToTickEnabled="True" />
+            <TextBlock Text="{Binding HeightCm, StringFormat={}{0:F0} см}"
+                       VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="55" />
+            <CheckBox Content="{DynamicResource Skeleton.ShowAxes}"
+                      IsChecked="{Binding ShowTrackerAxes, Mode=TwoWay}"
+                      VerticalAlignment="Center" Margin="20,0,0,0" />
+        </StackPanel>
+
+        <!-- 3D viewport -->
+        <helix:HelixViewport3D x:Name="Viewport" Grid.Row="1"
+                                Background="#1E1E2E"
+                                ShowCoordinateSystem="True"
+                                ShowViewCube="True"
+                                ZoomExtentsWhenLoaded="True"
+                                CameraRotationMode="Turntable"
+                                IsHeadLightEnabled="True"
+                                IsInertiaEnabled="True"
+                                ShowCameraInfo="False"
+                                RotateAroundMouseDownPoint="True"
+                                ZoomAroundMouseDownPoint="True">
+            <helix:HelixViewport3D.DefaultCamera>
+                <!-- Camera placed BEHIND the avatar (looking down +Z, the body's
+                     forward direction) so that screen-left = avatar-left = user-left.
+                     This avoids the "mirror" perception when watching motion. -->
+                <PerspectiveCamera Position="0 0.95 -2.0"
+                                   LookDirection="0 -0.05 1"
+                                   UpDirection="0 1 0"
+                                   FieldOfView="45" />
+            </helix:HelixViewport3D.DefaultCamera>
+            <helix:DefaultLights />
+        </helix:HelixViewport3D>
+    </Grid>
+</UserControl>

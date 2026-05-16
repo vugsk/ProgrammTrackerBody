@@ -1,0 +1,116 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="App.Title">ProgrammTrackerBody — SlimeVR server</sys:String>
+
+    <!-- Tabs -->
+    <sys:String x:Key="Tab.Dashboard">Dashboard</sys:String>
+    <sys:String x:Key="Tab.Trackers">Trackers</sys:String>
+    <sys:String x:Key="Tab.Calibration">Calibration</sys:String>
+    <sys:String x:Key="Tab.Skeleton">Skeleton</sys:String>
+    <sys:String x:Key="Tab.Logs">Logs</sys:String>
+
+    <!-- Dashboard -->
+    <sys:String x:Key="Dashboard.Port">Port:</sys:String>
+    <sys:String x:Key="Dashboard.Start">Start server</sys:String>
+    <sys:String x:Key="Dashboard.Stop">Stop server</sys:String>
+    <sys:String x:Key="Dashboard.Broadcast">Send handshake</sys:String>
+    <sys:String x:Key="Dashboard.Status">Status:</sys:String>
+    <sys:String x:Key="Dashboard.ConnectedTrackers">Connected trackers:</sys:String>
+    <sys:String x:Key="Dashboard.Language">Language:</sys:String>
+    <sys:String x:Key="Dashboard.LanguageRu">Russian</sys:String>
+    <sys:String x:Key="Dashboard.LanguageEn">English</sys:String>
+
+    <!-- State labels -->
+    <sys:String x:Key="State.Stopped">Stopped</sys:String>
+    <sys:String x:Key="State.Discovery">Discovery</sys:String>
+    <sys:String x:Key="State.SessionStart">Session start</sys:String>
+    <sys:String x:Key="State.Streaming">Streaming</sys:String>
+
+    <!-- Trackers tab -->
+    <sys:String x:Key="Trackers.Empty">No trackers connected. Start the server on the dashboard.</sys:String>
+    <sys:String x:Key="Trackers.DisplayName">Name</sys:String>
+    <sys:String x:Key="Trackers.Mac">MAC</sys:String>
+    <sys:String x:Key="Trackers.BodyPart">Body part</sys:String>
+    <sys:String x:Key="Trackers.Mounting">Mounting</sys:String>
+    <sys:String x:Key="Trackers.Battery">Battery</sys:String>
+    <sys:String x:Key="Trackers.Rssi">RSSI</sys:String>
+    <sys:String x:Key="Trackers.Rotation">Rotation</sys:String>
+    <sys:String x:Key="Trackers.LastSeen">Last seen</sys:String>
+    <sys:String x:Key="Trackers.Online">Online</sys:String>
+    <sys:String x:Key="Trackers.Stale">Stale</sys:String>
+    <sys:String x:Key="Trackers.Offline">Offline</sys:String>
+
+    <!-- Calibration tab -->
+    <sys:String x:Key="Calibration.YawReset">Yaw reset</sys:String>
+    <sys:String x:Key="Calibration.FullReset">Full reset</sys:String>
+    <sys:String x:Key="Calibration.MountingReset">Mounting reset</sys:String>
+    <sys:String x:Key="Calibration.Vibrate">Vibrate</sys:String>
+    <sys:String x:Key="Calibration.YawResetAll">Yaw reset all</sys:String>
+    <sys:String x:Key="Calibration.FullResetAll">Full reset all</sys:String>
+    <sys:String x:Key="Calibration.OffsetTable">Current offsets (debug)</sys:String>
+    <sys:String x:Key="Calibration.YawOffset">Yaw offset</sys:String>
+    <sys:String x:Key="Calibration.FullOffset">Full offset</sys:String>
+    <sys:String x:Key="Calibration.MountingOffset">Mounting offset</sys:String>
+    <sys:String x:Key="Calibration.DiagLog">Calibration log</sys:String>
+    <sys:String x:Key="Calibration.Intro">Hold the indicated pose, press the button, and stay still until the 3-second countdown finishes.</sys:String>
+    <sys:String x:Key="Calibration.StartFullReset">Full reset</sys:String>
+    <sys:String x:Key="Calibration.StartYawReset">Yaw reset</sys:String>
+    <sys:String x:Key="Calibration.StartMountingReset">Mounting reset</sys:String>
+    <sys:String x:Key="Calibration.PoseFull">Stand straight, facing forward, arms relaxed</sys:String>
+    <sys:String x:Key="Calibration.PoseYaw">Face forward</sys:String>
+    <sys:String x:Key="Calibration.PoseMounting">T-pose: arms out to the sides</sys:String>
+    <sys:String x:Key="Calibration.Advanced">Advanced (per tracker)</sys:String>
+    <sys:String x:Key="Calibration.StatusIdle">Ready</sys:String>
+    <sys:String x:Key="Calibration.StatusPreparing">Get ready, hold still…</sys:String>
+    <sys:String x:Key="Calibration.StatusFullDone">✓ Full reset applied</sys:String>
+    <sys:String x:Key="Calibration.StatusYawDone">✓ Yaw reset applied</sys:String>
+    <sys:String x:Key="Calibration.StatusMountingDone">✓ Mounting reset applied</sys:String>
+    <sys:String x:Key="Calibration.StartFullSetup">Full calibration</sys:String>
+    <sys:String x:Key="Calibration.PoseFullSetup">Use when first putting trackers on. Stand in I-pose</sys:String>
+    <sys:String x:Key="Calibration.StatusFullSetupDone">✓ Full calibration applied (mounting + yaw + full cleared)</sys:String>
+
+    <!-- Skeleton tab -->
+    <sys:String x:Key="Skeleton.Height">Height:</sys:String>
+    <sys:String x:Key="Skeleton.NoTrackers">Assign body parts to trackers on the Trackers tab.</sys:String>
+    <sys:String x:Key="Skeleton.ShowAxes">Show tracker axes</sys:String>
+
+    <!-- Logs tab -->
+    <sys:String x:Key="Logs.Packet">Packet log</sys:String>
+    <sys:String x:Key="Logs.System">System log</sys:String>
+    <sys:String x:Key="Logs.Time">Time</sys:String>
+    <sys:String x:Key="Logs.Direction">Direction</sys:String>
+    <sys:String x:Key="Logs.Endpoint">Endpoint</sys:String>
+    <sys:String x:Key="Logs.Type">Type</sys:String>
+    <sys:String x:Key="Logs.Summary">Summary</sys:String>
+
+    <!-- Body parts -->
+    <sys:String x:Key="BodyPart.None">Unassigned</sys:String>
+    <sys:String x:Key="BodyPart.Head">Head</sys:String>
+    <sys:String x:Key="BodyPart.Neck">Neck</sys:String>
+    <sys:String x:Key="BodyPart.UpperChest">Upper chest</sys:String>
+    <sys:String x:Key="BodyPart.Chest">Chest</sys:String>
+    <sys:String x:Key="BodyPart.Waist">Waist</sys:String>
+    <sys:String x:Key="BodyPart.Hip">Hip</sys:String>
+    <sys:String x:Key="BodyPart.LeftUpperLeg">Left upper leg</sys:String>
+    <sys:String x:Key="BodyPart.RightUpperLeg">Right upper leg</sys:String>
+    <sys:String x:Key="BodyPart.LeftLowerLeg">Left lower leg</sys:String>
+    <sys:String x:Key="BodyPart.RightLowerLeg">Right lower leg</sys:String>
+    <sys:String x:Key="BodyPart.LeftFoot">Left foot</sys:String>
+    <sys:String x:Key="BodyPart.RightFoot">Right foot</sys:String>
+    <sys:String x:Key="BodyPart.LeftUpperArm">Left upper arm</sys:String>
+    <sys:String x:Key="BodyPart.RightUpperArm">Right upper arm</sys:String>
+    <sys:String x:Key="BodyPart.LeftLowerArm">Left lower arm</sys:String>
+    <sys:String x:Key="BodyPart.RightLowerArm">Right lower arm</sys:String>
+    <sys:String x:Key="BodyPart.LeftHand">Left hand</sys:String>
+    <sys:String x:Key="BodyPart.RightHand">Right hand</sys:String>
+
+    <!-- Mounting orientations -->
+    <sys:String x:Key="Mounting.Front">Front</sys:String>
+    <sys:String x:Key="Mounting.Back">Back</sys:String>
+    <sys:String x:Key="Mounting.Left">Left</sys:String>
+    <sys:String x:Key="Mounting.Right">Right</sys:String>
+
+</ResourceDictionary>

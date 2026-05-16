@@ -1,0 +1,22 @@
+<Application x:Class="ProgrammTrackerBody.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProgrammTrackerBody"
+             xmlns:conv="clr-namespace:ProgrammTrackerBody.Views.Converters"
+             xmlns:domain="clr-namespace:ProgrammTrackerBody.Domain">
+    <Application.Resources>
+        <ResourceDictionary>
+            <conv:ResourceLookupConverter x:Key="ResourceLookupConverter" />
+            <conv:EnumResourceLookupConverter x:Key="EnumResourceLookupConverter" />
+            <conv:BoolToResourceKeyConverter x:Key="BoolToResourceKeyConverter" />
+            <conv:BoolToBrushConverter x:Key="BoolToBrushConverter" />
+            <conv:ZeroToVisibleConverter x:Key="ZeroToVisibleConverter" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <x:Static x:Key="AllBodyParts" Member="domain:BodyParts.All" />
+            <x:Static x:Key="AllMountings" Member="domain:MountingOrientations.All" />
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Strings.<lang>.xaml is appended at runtime by LocalizationService. -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

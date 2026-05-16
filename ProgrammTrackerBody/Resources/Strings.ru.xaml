@@ -1,0 +1,116 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="App.Title">ProgrammTrackerBody — SlimeVR-сервер</sys:String>
+
+    <!-- Tabs -->
+    <sys:String x:Key="Tab.Dashboard">Панель</sys:String>
+    <sys:String x:Key="Tab.Trackers">Трекеры</sys:String>
+    <sys:String x:Key="Tab.Calibration">Калибровка</sys:String>
+    <sys:String x:Key="Tab.Skeleton">Скелет</sys:String>
+    <sys:String x:Key="Tab.Logs">Журналы</sys:String>
+
+    <!-- Dashboard -->
+    <sys:String x:Key="Dashboard.Port">Порт:</sys:String>
+    <sys:String x:Key="Dashboard.Start">Запустить сервер</sys:String>
+    <sys:String x:Key="Dashboard.Stop">Остановить сервер</sys:String>
+    <sys:String x:Key="Dashboard.Broadcast">Отправить handshake</sys:String>
+    <sys:String x:Key="Dashboard.Status">Статус:</sys:String>
+    <sys:String x:Key="Dashboard.ConnectedTrackers">Подключено трекеров:</sys:String>
+    <sys:String x:Key="Dashboard.Language">Язык:</sys:String>
+    <sys:String x:Key="Dashboard.LanguageRu">Русский</sys:String>
+    <sys:String x:Key="Dashboard.LanguageEn">English</sys:String>
+
+    <!-- State labels -->
+    <sys:String x:Key="State.Stopped">Остановлен</sys:String>
+    <sys:String x:Key="State.Discovery">Поиск</sys:String>
+    <sys:String x:Key="State.SessionStart">Начало сессии</sys:String>
+    <sys:String x:Key="State.Streaming">Поток данных</sys:String>
+
+    <!-- Trackers tab -->
+    <sys:String x:Key="Trackers.Empty">Нет подключённых трекеров. Запустите сервер на панели.</sys:String>
+    <sys:String x:Key="Trackers.DisplayName">Имя</sys:String>
+    <sys:String x:Key="Trackers.Mac">MAC</sys:String>
+    <sys:String x:Key="Trackers.BodyPart">Часть тела</sys:String>
+    <sys:String x:Key="Trackers.Mounting">Ориентация</sys:String>
+    <sys:String x:Key="Trackers.Battery">Батарея</sys:String>
+    <sys:String x:Key="Trackers.Rssi">RSSI</sys:String>
+    <sys:String x:Key="Trackers.Rotation">Кватернион</sys:String>
+    <sys:String x:Key="Trackers.LastSeen">Последний пакет</sys:String>
+    <sys:String x:Key="Trackers.Online">Онлайн</sys:String>
+    <sys:String x:Key="Trackers.Stale">Устарело</sys:String>
+    <sys:String x:Key="Trackers.Offline">Оффлайн</sys:String>
+
+    <!-- Calibration tab -->
+    <sys:String x:Key="Calibration.YawReset">Сброс Yaw</sys:String>
+    <sys:String x:Key="Calibration.FullReset">Полный сброс</sys:String>
+    <sys:String x:Key="Calibration.MountingReset">Сброс ориентации</sys:String>
+    <sys:String x:Key="Calibration.Vibrate">Вибрация</sys:String>
+    <sys:String x:Key="Calibration.YawResetAll">Сброс Yaw всех</sys:String>
+    <sys:String x:Key="Calibration.FullResetAll">Полный сброс всех</sys:String>
+    <sys:String x:Key="Calibration.OffsetTable">Текущие смещения (отладка)</sys:String>
+    <sys:String x:Key="Calibration.YawOffset">Yaw-смещение</sys:String>
+    <sys:String x:Key="Calibration.FullOffset">Полное смещение</sys:String>
+    <sys:String x:Key="Calibration.MountingOffset">Смещение крепления</sys:String>
+    <sys:String x:Key="Calibration.DiagLog">Лог калибровки</sys:String>
+    <sys:String x:Key="Calibration.Intro">Снимите указанную позу, нажмите кнопку и удерживайте позу до завершения 3-секундного отсчёта.</sys:String>
+    <sys:String x:Key="Calibration.StartFullReset">Полный сброс</sys:String>
+    <sys:String x:Key="Calibration.StartYawReset">Сброс рыскания</sys:String>
+    <sys:String x:Key="Calibration.StartMountingReset">Сброс крепления</sys:String>
+    <sys:String x:Key="Calibration.PoseFull">Встаньте прямо, лицом вперёд, руки по швам</sys:String>
+    <sys:String x:Key="Calibration.PoseYaw">Встаньте лицом вперёд</sys:String>
+    <sys:String x:Key="Calibration.PoseMounting">T-поза: руки в стороны параллельно полу</sys:String>
+    <sys:String x:Key="Calibration.Advanced">Расширенно (по трекерам)</sys:String>
+    <sys:String x:Key="Calibration.StatusIdle">Готов к калибровке</sys:String>
+    <sys:String x:Key="Calibration.StatusPreparing">Подготовьтесь, не двигайтесь…</sys:String>
+    <sys:String x:Key="Calibration.StatusFullDone">✓ Полный сброс применён</sys:String>
+    <sys:String x:Key="Calibration.StatusYawDone">✓ Сброс рыскания применён</sys:String>
+    <sys:String x:Key="Calibration.StatusMountingDone">✓ Сброс крепления применён</sys:String>
+    <sys:String x:Key="Calibration.StartFullSetup">Полная калибровка</sys:String>
+    <sys:String x:Key="Calibration.PoseFullSetup">При первом надевании трекеров. Стойте в I-позе</sys:String>
+    <sys:String x:Key="Calibration.StatusFullSetupDone">✓ Полная калибровка применена (mounting + yaw + full обнулены)</sys:String>
+
+    <!-- Skeleton tab -->
+    <sys:String x:Key="Skeleton.Height">Рост:</sys:String>
+    <sys:String x:Key="Skeleton.NoTrackers">Назначьте части тела трекерам на вкладке «Трекеры».</sys:String>
+    <sys:String x:Key="Skeleton.ShowAxes">Показать оси трекеров</sys:String>
+
+    <!-- Logs tab -->
+    <sys:String x:Key="Logs.Packet">Журнал пакетов</sys:String>
+    <sys:String x:Key="Logs.System">Системный журнал</sys:String>
+    <sys:String x:Key="Logs.Time">Время</sys:String>
+    <sys:String x:Key="Logs.Direction">Направление</sys:String>
+    <sys:String x:Key="Logs.Endpoint">Адрес</sys:String>
+    <sys:String x:Key="Logs.Type">Тип</sys:String>
+    <sys:String x:Key="Logs.Summary">Описание</sys:String>
+
+    <!-- Body parts -->
+    <sys:String x:Key="BodyPart.None">Не назначено</sys:String>
+    <sys:String x:Key="BodyPart.Head">Голова</sys:String>
+    <sys:String x:Key="BodyPart.Neck">Шея</sys:String>
+    <sys:String x:Key="BodyPart.UpperChest">Верхняя грудь</sys:String>
+    <sys:String x:Key="BodyPart.Chest">Грудь</sys:String>
+    <sys:String x:Key="BodyPart.Waist">Талия</sys:String>
+    <sys:String x:Key="BodyPart.Hip">Таз</sys:String>
+    <sys:String x:Key="BodyPart.LeftUpperLeg">Левое бедро</sys:String>
+    <sys:String x:Key="BodyPart.RightUpperLeg">Правое бедро</sys:String>
+    <sys:String x:Key="BodyPart.LeftLowerLeg">Левая голень</sys:String>
+    <sys:String x:Key="BodyPart.RightLowerLeg">Правая голень</sys:String>
+    <sys:String x:Key="BodyPart.LeftFoot">Левая стопа</sys:String>
+    <sys:String x:Key="BodyPart.RightFoot">Правая стопа</sys:String>
+    <sys:String x:Key="BodyPart.LeftUpperArm">Левое плечо</sys:String>
+    <sys:String x:Key="BodyPart.RightUpperArm">Правое плечо</sys:String>
+    <sys:String x:Key="BodyPart.LeftLowerArm">Левое предплечье</sys:String>
+    <sys:String x:Key="BodyPart.RightLowerArm">Правое предплечье</sys:String>
+    <sys:String x:Key="BodyPart.LeftHand">Левая кисть</sys:String>
+    <sys:String x:Key="BodyPart.RightHand">Правая кисть</sys:String>
+
+    <!-- Mounting orientations -->
+    <sys:String x:Key="Mounting.Front">Спереди</sys:String>
+    <sys:String x:Key="Mounting.Back">Сзади</sys:String>
+    <sys:String x:Key="Mounting.Left">Слева</sys:String>
+    <sys:String x:Key="Mounting.Right">Справа</sys:String>
+
+</ResourceDictionary>
