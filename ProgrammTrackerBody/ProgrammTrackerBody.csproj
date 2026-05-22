@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
+        <!-- HelixToolkit.Wpf 2.25.0 ships as net4x but is binary-compatible with
+             net10.0-windows WPF. Suppress NU1701 until a native .NET build ships. -->
+        <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" NoWarn="NU1701" />
     </ItemGroup>
 
 </Project>

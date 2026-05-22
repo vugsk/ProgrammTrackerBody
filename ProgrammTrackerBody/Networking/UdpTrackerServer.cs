@@ -565,7 +565,13 @@ public sealed class UdpTrackerServer : IAsyncDisposable
         session.FirstSensorInfoReceived = true;
         Log("SYSTEM", endpoint.ToString(), "Session", "First SensorInfo received");
 
-        if (session.MacKey == _activeMacKey)
+        string? activeKey;
+        lock (_syncRoot)
+        {
+            activeKey = _activeMacKey;
+        }
+
+        if (session.MacKey == activeKey)
         {
             TransitionState(TrackerSessionState.Streaming);
         }
@@ -811,6 +817,12 @@ public sealed class UdpTrackerServer : IAsyncDisposable
             try
             {
                 var sessions = GetAliveSessions();
+                string? activeKey;
+                lock (_syncRoot)
+                {
+                    activeKey = _activeMacKey;
+                }
+
                 foreach (var session in sessions)
                 {
                     await SendPacketToSessionAsync(session, ReceivePacketType.HeartBeat, Array.Empty<byte>(), "HeartBeat", null, false);
@@ -823,7 +835,7 @@ public sealed class UdpTrackerServer : IAsyncDisposable
                         await SendPacketToSessionAsync(session, ReceivePacketType.PingPong, pingPayload, "PingPong", SendPacketType.PingPong, true);
                     }
 
-                    if (session.MacKey == _activeMacKey)
+                    if (session.MacKey == activeKey)
                     {
                         PublishActiveTrackerInfo(session);
                     }

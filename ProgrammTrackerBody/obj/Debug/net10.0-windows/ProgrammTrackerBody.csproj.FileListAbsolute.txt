@@ -35,3 +35,4 @@ C:\Users\nikit\RiderProjects\ProgrammTrackerBody\ProgrammTrackerBody\obj\Debug\n
 C:\Users\nikit\RiderProjects\ProgrammTrackerBody\ProgrammTrackerBody\obj\Debug\net10.0-windows\Programm.1F38C600.Up2Date
 C:\Users\nikit\RiderProjects\ProgrammTrackerBody\ProgrammTrackerBody\obj\Debug\net10.0-windows\Views\SkeletonTab.baml
 C:\Users\nikit\RiderProjects\ProgrammTrackerBody\ProgrammTrackerBody\obj\Debug\net10.0-windows\Views\SkeletonTab.g.cs
+C:\Users\nikit\RiderProjects\ProgrammTrackerBody\ProgrammTrackerBody\obj\Debug\net10.0-windows\ProgrammTrackerBody.sourcelink.json

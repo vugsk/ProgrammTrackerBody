@@ -21,8 +21,11 @@
                     Maximum="{Binding HeightMax}"
                     Width="220" VerticalAlignment="Center"
                     TickFrequency="10" IsSnapToTickEnabled="True" />
-            <TextBlock Text="{Binding HeightCm, StringFormat={}{0:F0} см}"
-                       VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="55" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                        Margin="8,0,0,0" MinWidth="55">
+                <TextBlock Text="{Binding HeightCm, StringFormat={}{0:F0}}" />
+                <TextBlock Text="{DynamicResource Skeleton.Cm}" Margin="2,0,0,0" />
+            </StackPanel>
             <CheckBox Content="{DynamicResource Skeleton.ShowAxes}"
                       IsChecked="{Binding ShowTrackerAxes, Mode=TwoWay}"
                       VerticalAlignment="Center" Margin="20,0,0,0" />

@@ -74,6 +74,7 @@
 
     <!-- Skeleton tab -->
     <sys:String x:Key="Skeleton.Height">Height:</sys:String>
+    <sys:String x:Key="Skeleton.Cm">cm</sys:String>
     <sys:String x:Key="Skeleton.NoTrackers">Assign body parts to trackers on the Trackers tab.</sys:String>
     <sys:String x:Key="Skeleton.ShowAxes">Show tracker axes</sys:String>
 
