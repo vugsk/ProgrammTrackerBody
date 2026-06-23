@@ -8,11 +8,10 @@ using ProgrammTrackerBody.Services;
 
 namespace ProgrammTrackerBody.ViewModels;
 
-public sealed class TrackersViewModel : ViewModelBase, IDisposable
+public sealed class TrackersViewModel : ViewModelBase
 {
     private readonly ObservableCollection<TrackerModel> _models;
     private readonly DispatcherTimer _statusTimer;
-    private bool _disposed;
 
     public TrackersViewModel(TrackerManager trackerManager)
     {
@@ -23,35 +22,17 @@ public sealed class TrackersViewModel : ViewModelBase, IDisposable
         _models.CollectionChanged += OnModelsChanged;
 
         _statusTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _statusTimer.Tick += OnStatusTick;
+        _statusTimer.Tick += (_, _) =>
+        {
+            foreach (var vm in TrackerViewModels)
+            {
+                vm.RefreshStatus();
+            }
+        };
         _statusTimer.Start();
     }
 
     public ObservableCollection<TrackerViewModel> TrackerViewModels { get; }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-
-        _statusTimer.Stop();
-        _statusTimer.Tick -= OnStatusTick;
-        _models.CollectionChanged -= OnModelsChanged;
-
-        foreach (var vm in TrackerViewModels)
-        {
-            vm.Dispose();
-        }
-        TrackerViewModels.Clear();
-    }
-
-    private void OnStatusTick(object? sender, EventArgs e)
-    {
-        foreach (var vm in TrackerViewModels)
-        {
-            vm.RefreshStatus();
-        }
-    }
 
     private void OnModelsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

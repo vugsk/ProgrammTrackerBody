@@ -1,14 +1,11 @@
-using System;
 using System.Windows.Threading;
 using ProgrammTrackerBody.Networking;
 using ProgrammTrackerBody.Services;
 
 namespace ProgrammTrackerBody.ViewModels;
 
-public sealed class MainViewModel : ViewModelBase, IDisposable
+public sealed class MainViewModel : ViewModelBase
 {
-    private bool _disposed;
-
     public MainViewModel(
         UdpTrackerServer server,
         TrackerManager trackerManager,
@@ -41,14 +38,4 @@ public sealed class MainViewModel : ViewModelBase, IDisposable
     public SkeletonViewModel Skeleton { get; }
 
     public LogsViewModel Logs { get; }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-
-        Dashboard.Dispose();
-        Trackers.Dispose();
-        Calibration.Dispose();
-    }
 }

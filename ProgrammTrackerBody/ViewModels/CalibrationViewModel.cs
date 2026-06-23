@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -17,13 +16,12 @@ public enum CalibrationTarget
     FullSetup,
 }
 
-public sealed class CalibrationViewModel : ViewModelBase, IDisposable
+public sealed class CalibrationViewModel : ViewModelBase
 {
     private readonly TrackerManager _trackerManager;
     private readonly LocalizationService _localization;
     private DispatcherTimer? _countdownTimer;
     private int _countdownSeconds;
-    private bool _disposed;
 
     private CalibrationTarget _countdownTarget = CalibrationTarget.None;
     private string _countdownText = string.Empty;
@@ -55,26 +53,7 @@ public sealed class CalibrationViewModel : ViewModelBase, IDisposable
         StartFullSetupCommand     = new RelayCommand(_ => StartCountdown(CalibrationTarget.FullSetup), _ => CanStartCountdown());
 
         // Re-fire status key when language changes so the bound converter re-evaluates.
-        _localization.PropertyChanged += OnLocalizationPropertyChanged;
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-
-        _localization.PropertyChanged -= OnLocalizationPropertyChanged;
-        if (_countdownTimer is not null)
-        {
-            _countdownTimer.Stop();
-            _countdownTimer.Tick -= OnCountdownTick;
-            _countdownTimer = null;
-        }
-    }
-
-    private void OnLocalizationPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(StatusMessageKey));
+        _localization.PropertyChanged += (_, _) => OnPropertyChanged(nameof(StatusMessageKey));
     }
 
     public ObservableCollection<TrackerModel> Trackers { get; }

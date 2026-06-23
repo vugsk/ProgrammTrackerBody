@@ -43,19 +43,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nikit\\.nuget\\packages\\": {}
+    "C:\\Users\\user\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nikit\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\ProgrammTrackerBody.csproj",
+      "projectUniqueName": "C:\\Users\\user\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\ProgrammTrackerBody.csproj",
       "projectName": "ProgrammTrackerBody",
-      "projectPath": "C:\\Users\\nikit\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\ProgrammTrackerBody.csproj",
-      "packagesPath": "C:\\Users\\nikit\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nikit\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\obj\\",
+      "projectPath": "C:\\Users\\user\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\ProgrammTrackerBody.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user\\RiderProjects\\ProgrammTrackerBody\\ProgrammTrackerBody\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nikit\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"
@@ -79,7 +79,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0-windows7.0": {
@@ -112,7 +112,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\nikit\\.dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Users\\user\\.dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

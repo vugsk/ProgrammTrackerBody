@@ -19,7 +19,7 @@ There are no automated tests in the project — manual testing is done via the P
 
 ## Architecture
 
-**Stack:** C# / WPF / .NET 10.0-windows. No external NuGet dependencies.
+**Stack:** C# / WPF / .NET 10.0-windows. One NuGet dependency: `HelixToolkit.Wpf` (3D skeleton rendering in `Views/SkeletonTab.xaml.cs`).
 
 **Purpose:** A desktop UI for receiving SlimeVR-compatible tracker telemetry over UDP, visualizing sensor data, and sending commands back to the tracker.
 

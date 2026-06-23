@@ -51,6 +51,7 @@ public sealed class ConfigStore
     };
 
     private readonly string _path;
+    private readonly SemaphoreSlim _writeLock = new(1, 1);
 
     public ConfigStore()
         : this(GetDefaultPath())
@@ -86,20 +87,51 @@ public sealed class ConfigStore
 
     public async Task SaveAsync(AppConfig config)
     {
-        var directory = Path.GetDirectoryName(_path);
-        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        // Serialize concurrent writers (debounced timer + shutdown flush could
+        // otherwise race on the same temp file and fail one of the writes).
+        await _writeLock.WaitAsync();
+        try
         {
-            Directory.CreateDirectory(directory);
-        }
+            var directory = Path.GetDirectoryName(_path);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
-        var tempPath = _path + ".tmp";
-        await using (var stream = File.Create(tempPath))
+            // Unique temp name as a second line of defence against collisions.
+            var tempPath = $"{_path}.{Guid.NewGuid():N}.tmp";
+            try
+            {
+                await using (var stream = File.Create(tempPath))
+                {
+                    await JsonSerializer.SerializeAsync(stream, config, JsonOptions);
+                }
+
+                // Atomic replace so a crash mid-write can't leave a half-written config.
+                File.Move(tempPath, _path, overwrite: true);
+            }
+            catch
+            {
+                // Best-effort cleanup of the temp file if the move never happened.
+                try
+                {
+                    if (File.Exists(tempPath))
+                    {
+                        File.Delete(tempPath);
+                    }
+                }
+                catch
+                {
+                    // Ignore — nothing more we can do.
+                }
+
+                throw;
+            }
+        }
+        finally
         {
-            await JsonSerializer.SerializeAsync(stream, config, JsonOptions);
+            _writeLock.Release();
         }
-
-        // Atomic replace so a crash mid-write can't leave a half-written config.
-        File.Move(tempPath, _path, overwrite: true);
     }
 
     private static string GetDefaultPath()

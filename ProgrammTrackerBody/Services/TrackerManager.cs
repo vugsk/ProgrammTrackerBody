@@ -22,6 +22,9 @@ public sealed class TrackerManager : INotifyPropertyChanged, IDisposable, IAsync
     private readonly Dictionary<string, TrackerModel> _byMacKey = new(StringComparer.OrdinalIgnoreCase);
     private readonly object _persistLock = new();
     private readonly Dictionary<string, DateTime> _lastDiagLogUtc = new(StringComparer.OrdinalIgnoreCase);
+    private readonly object _rotationLock = new();
+    private readonly Dictionary<string, RotationDataMessage> _pendingRotations = new(StringComparer.OrdinalIgnoreCase);
+    private bool _rotationFlushScheduled;
     private DispatcherTimer? _persistTimer;
     private AppConfig _config = new();
     private bool _isLoaded;
@@ -241,11 +244,41 @@ public sealed class TrackerManager : INotifyPropertyChanged, IDisposable, IAsync
     private void OnRotationReceived(RotationDataMessage message)
     {
         var macKey = TrackerIdToMacKey(message.TrackerId);
-        _dispatcher.Invoke(() =>
+        bool scheduleFlush;
+        lock (_rotationLock)
         {
+            // Keep only the latest rotation per tracker — older samples in the
+            // same dispatcher cycle would be overwritten on screen anyway.
+            _pendingRotations[macKey] = message;
+            scheduleFlush = !_rotationFlushScheduled;
+            _rotationFlushScheduled = true;
+        }
+
+        if (scheduleFlush)
+        {
+            // Non-blocking marshal. Coalesces 100+ Hz rotation bursts (across all
+            // trackers) into a single UI update per dispatcher pass, so the UDP
+            // receive thread is never blocked waiting on the UI thread.
+            _dispatcher.BeginInvoke(FlushPendingRotations);
+        }
+    }
+
+    private void FlushPendingRotations()
+    {
+        List<RotationDataMessage> batch;
+        lock (_rotationLock)
+        {
+            _rotationFlushScheduled = false;
+            batch = _pendingRotations.Values.ToList();
+            _pendingRotations.Clear();
+        }
+
+        foreach (var message in batch)
+        {
+            var macKey = TrackerIdToMacKey(message.TrackerId);
             if (!_byMacKey.TryGetValue(macKey, out var model))
             {
-                return;
+                continue;
             }
 
             model.SensorId = message.SensorId;
@@ -253,7 +286,7 @@ public sealed class TrackerManager : INotifyPropertyChanged, IDisposable, IAsync
             model.LastSeenUtc = DateTime.UtcNow;
             model.IsOnline = true;
             RecomputeDisplay(model);
-        });
+        }
     }
 
     private void OnBatteryReceived(BatteryLevelMessage message)
@@ -350,7 +383,16 @@ public sealed class TrackerManager : INotifyPropertyChanged, IDisposable, IAsync
 
     private static string TrackerIdToMacKey(string trackerId)
     {
-        // TrackerId is "AA:BB:CC:DD:EE:FF"; macKey is "aabbccddeeff".
+        // When the MAC was parsed, TrackerId is "AA:BB:CC:DD:EE:FF" and the
+        // session key is "aabbccddeeff". When the MAC parse failed, the server
+        // uses an "ep:<endpoint>" key verbatim for BOTH the session key and the
+        // TrackerId — stripping colons there would corrupt the key and silently
+        // drop all telemetry for that tracker, so pass it through unchanged.
+        if (trackerId.StartsWith("ep:", StringComparison.OrdinalIgnoreCase))
+        {
+            return trackerId;
+        }
+
         return trackerId.Replace(":", string.Empty).ToLowerInvariant();
     }
 

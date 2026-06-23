@@ -40,8 +40,6 @@ public partial class App : Application
     {
         try
         {
-            (MainWindow?.DataContext as IDisposable)?.Dispose();
-
             if (_server is not null)
             {
                 await _server.DisposeAsync();

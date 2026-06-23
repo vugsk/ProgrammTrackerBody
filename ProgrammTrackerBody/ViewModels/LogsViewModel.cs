@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Threading;
@@ -19,6 +20,9 @@ public sealed class LogsViewModel : ViewModelBase
     private const int MaxSystemLogChars = 12000;
 
     private readonly Dispatcher _dispatcher;
+    private readonly object _pendingLock = new();
+    private readonly List<PacketLogMessage> _pending = new();
+    private bool _flushScheduled;
     private string _systemLog = string.Empty;
 
     public LogsViewModel(UdpTrackerServer server, Dispatcher dispatcher)
@@ -49,8 +53,37 @@ public sealed class LogsViewModel : ViewModelBase
 
     private void OnPacketLogged(PacketLogMessage message)
     {
-        _dispatcher.Invoke(() =>
+        bool schedule;
+        lock (_pendingLock)
         {
+            _pending.Add(message);
+            schedule = !_flushScheduled;
+            _flushScheduled = true;
+        }
+
+        if (schedule)
+        {
+            // Non-blocking marshal. Packet logging runs at the same rate as
+            // telemetry (100+ Hz); coalescing keeps the background server threads
+            // from blocking on the UI thread for every single packet.
+            _dispatcher.BeginInvoke(FlushPending);
+        }
+    }
+
+    private void FlushPending()
+    {
+        List<PacketLogMessage> batch;
+        lock (_pendingLock)
+        {
+            _flushScheduled = false;
+            batch = new List<PacketLogMessage>(_pending);
+            _pending.Clear();
+        }
+
+        foreach (var message in batch)
+        {
+            // Insert each at index 0 in arrival order → newest ends up first,
+            // matching the previous per-packet behaviour.
             Packets.Insert(0, new PacketLogRow(
                 message.TimestampUtc.ToLocalTime().ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture),
                 message.Direction,
@@ -58,15 +91,15 @@ public sealed class LogsViewModel : ViewModelBase
                 message.PacketType,
                 message.Summary));
 
-            while (Packets.Count > MaxPacketRows)
-            {
-                Packets.RemoveAt(Packets.Count - 1);
-            }
-
             if (message.Direction == "SYSTEM")
             {
                 AppendSystem($"[{message.PacketType}] {message.Summary}");
             }
-        });
+        }
+
+        while (Packets.Count > MaxPacketRows)
+        {
+            Packets.RemoveAt(Packets.Count - 1);
+        }
     }
 }

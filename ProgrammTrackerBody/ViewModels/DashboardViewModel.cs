@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using ProgrammTrackerBody.Networking;
@@ -7,7 +6,7 @@ using ProgrammTrackerBody.Services;
 
 namespace ProgrammTrackerBody.ViewModels;
 
-public sealed class DashboardViewModel : ViewModelBase, IDisposable
+public sealed class DashboardViewModel : ViewModelBase
 {
     private readonly UdpTrackerServer _server;
     private readonly TrackerManager _trackerManager;
@@ -18,7 +17,6 @@ public sealed class DashboardViewModel : ViewModelBase, IDisposable
     private TrackerSessionState _sessionState = TrackerSessionState.Stopped;
     private int _serverPort;
     private bool _isRunning;
-    private bool _disposed;
 
     public DashboardViewModel(
         UdpTrackerServer server,
@@ -37,41 +35,27 @@ public sealed class DashboardViewModel : ViewModelBase, IDisposable
         BroadcastCommand = new RelayCommand(_ => _ = BroadcastAsync(), _ => IsRunning);
         SetLanguageCommand = new RelayCommand(p => SetLanguage(p as string));
 
-        _server.SessionStateChanged += OnSessionStateChanged;
-        _trackerManager.PropertyChanged += OnTrackerManagerPropertyChanged;
-        _localization.PropertyChanged += OnLocalizationPropertyChanged;
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-
-        _server.SessionStateChanged -= OnSessionStateChanged;
-        _trackerManager.PropertyChanged -= OnTrackerManagerPropertyChanged;
-        _localization.PropertyChanged -= OnLocalizationPropertyChanged;
-    }
-
-    private void OnSessionStateChanged(TrackerSessionState state)
-    {
-        SessionState = state;
-        IsRunning = _server.IsRunning;
-    }
-
-    private void OnTrackerManagerPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(TrackerManager.ConnectedCount))
+        _server.SessionStateChanged += state =>
         {
-            OnPropertyChanged(nameof(ConnectedCount));
-        }
-    }
+            SessionState = state;
+            IsRunning = _server.IsRunning;
+        };
 
-    private void OnLocalizationPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        // Re-fire so {Binding ..., Converter=ResourceLookupConverter} re-evaluates.
-        OnPropertyChanged(nameof(SessionStateKey));
-        OnPropertyChanged(nameof(StartStopButtonKey));
-        OnPropertyChanged(nameof(CurrentLanguage));
+        _trackerManager.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(TrackerManager.ConnectedCount))
+            {
+                OnPropertyChanged(nameof(ConnectedCount));
+            }
+        };
+
+        _localization.PropertyChanged += (_, _) =>
+        {
+            // Re-fire so {Binding ..., Converter=ResourceLookupConverter} re-evaluates.
+            OnPropertyChanged(nameof(SessionStateKey));
+            OnPropertyChanged(nameof(StartStopButtonKey));
+            OnPropertyChanged(nameof(CurrentLanguage));
+        };
     }
 
     public string PortText
